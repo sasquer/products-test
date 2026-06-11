@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.ksp)
@@ -29,6 +31,18 @@ android {
                 "proguard-rules.pro"
             )
         }
+
+        debug {
+
+            val localProperties = Properties().apply {
+                val localPropsFile = rootProject.file("local.properties")
+                if (localPropsFile.exists()) {
+                    load(localPropsFile.inputStream())
+                }
+            }
+            val baseApiUrl = localProperties.getProperty("BASE_API_URL") ?: ""
+            buildConfigField("String", "BASE_API_URL", baseApiUrl)
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -36,6 +50,7 @@ android {
     }
 
     buildFeatures {
+        buildConfig = true
         dataBinding = true
         viewBinding = true
     }
