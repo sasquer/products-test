@@ -2,4 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="error_color">#C40D00</color>
+    <color name="price_color">#5464EF</color>
+    <color name="discount_color">#07940C</color>
+    <color name="text_secondary_color">#80000000</color>
+    <color name="image_placeholder_bg">#7C7777</color>
 </resources>
