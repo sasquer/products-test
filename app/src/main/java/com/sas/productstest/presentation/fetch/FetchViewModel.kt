@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sas.productstest.domain.model.Product
 import com.sas.productstest.domain.usecase.FetchProductsUseCase
-import com.sas.productstest.presentation.comon.UiState
+import com.sas.productstest.presentation.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow

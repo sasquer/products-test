@@ -1,4 +1,4 @@
-package com.sas.productstest.presentation.comon
+package com.sas.productstest.presentation.common
 
 sealed class UiState<out T> {
     object Idle : UiState<Nothing>()
