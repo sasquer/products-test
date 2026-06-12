@@ -4,4 +4,8 @@
     <string name="retry">Повторити спробу</string>
     <string name="error_need_retry">Виникла помилка, повторіть спробу</string>
     <string name="title_fetch">Отримання продуктів</string>
+    <string name="in_stock">In Stock</string>
+    <string name="out_of_stock">Out of Stock</string>
+    <string name="price_format">%.2f</string>
+    <string name="discount_format">%1$d %%</string>
 </resources>
