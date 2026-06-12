@@ -2,6 +2,7 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.hilt.android)
     alias(libs.plugins.ksp)
 }
 
@@ -34,14 +35,19 @@ android {
 
         debug {
 
-            val localProperties = Properties().apply {
-                val localPropsFile = rootProject.file("local.properties")
-                if (localPropsFile.exists()) {
-                    load(localPropsFile.inputStream())
-                }
-            }
-            val baseApiUrl = localProperties.getProperty("BASE_API_URL") ?: ""
-            buildConfigField("String", "BASE_API_URL", baseApiUrl)
+            // Для більш захищеної реалізації можна зберігати такі поля (ключі, налаштування середовищ і т.д.)
+            // в [local.properties], тому залишу як варіант реалізації, але цей файл не можна передавати в репозиторій.
+            // Тому в вас без нього програма не збілдиться. Для тестового додатка достатньо реалізації нижче
+//            val localProperties = Properties().apply {
+//                val localPropsFile = rootProject.file("local.properties")
+//                if (localPropsFile.exists()) {
+//                    load(localPropsFile.inputStream())
+//                }
+//            }
+//            val baseApiUrl = localProperties.getProperty("BASE_API_URL") ?: ""
+//            buildConfigField("String", "BASE_API_URL", baseApiUrl)
+
+            buildConfigField("String", "BASE_API_URL", "\"https://fake-store-api.mock.beeceptor.com/api/\"")
         }
     }
     compileOptions {
