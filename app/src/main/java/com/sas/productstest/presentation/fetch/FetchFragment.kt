@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.sas.productstest.databinding.FragmentFetchBinding
 import com.sas.productstest.presentation.common.UiState
 import dagger.hilt.android.AndroidEntryPoint
@@ -66,7 +67,9 @@ class FetchFragment : Fragment() {
                             binding.btnFetch.isEnabled = true
                             binding.progressBar.visibility = View.GONE
                             binding.layoutError.visibility = View.GONE
-                            //TODO: Навігацію до екрану зі списком продуктів
+                            val action = FetchFragmentDirections
+                                .actionFetchFragmentToProductListFragment()
+                            findNavController().navigate(action)
                             viewModel.resetState()
                         }
 

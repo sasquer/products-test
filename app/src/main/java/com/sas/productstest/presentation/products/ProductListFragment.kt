@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.sas.productstest.databinding.FragmentProductListBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -21,8 +22,10 @@ class ProductListFragment : Fragment() {
 
     private val viewModel: ProductListViewModel by viewModels()
 
-    private val adapter = ProductAdapter {
-
+    private val adapter = ProductAdapter { product ->
+        val action = ProductListFragmentDirections
+            .actionProductListFragmentToEditProductFragment(productId = product.productId)
+        findNavController().navigate(action)
     }
 
     override fun onCreateView(
