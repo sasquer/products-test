@@ -30,4 +30,14 @@
         <item name="android:layout_marginTop">2dp</item>
     </style>
 
+    <style name="Widget.App.Button.OutlinedGreen"
+        parent="Widget.Material3.Button.OutlinedButton">
+        <item name="strokeColor">@color/success_color</item>
+        <item name="android:textColor">@color/success_color</item>
+        <item name="iconTint">@color/success_color</item>
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="rippleColor">@color/success_color</item>
+
+    </style>
+
 </resources>

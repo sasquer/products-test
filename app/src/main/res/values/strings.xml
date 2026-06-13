@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">ProductsTest</string>
     <string name="get_data">Отримати дані</string>
+    <string name="show_cache">Подивитись кеш</string>
     <string name="retry">Повторити спробу</string>
     <string name="error_need_retry">Виникла помилка, повторіть спробу</string>
     <string name="title_fetch">Отримання продуктів</string>

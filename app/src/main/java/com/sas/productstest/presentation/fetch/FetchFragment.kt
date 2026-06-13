@@ -22,6 +22,9 @@ class FetchFragment : Fragment() {
 
     private val viewModel: FetchViewModel by viewModels()
 
+    private var isLoading = false
+    private var hasCachedData = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -33,15 +36,15 @@ class FetchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.btnFetch.setOnClickListener {
-            viewModel.fetchProducts()
-        }
-
-        binding.btnRetry.setOnClickListener {
-            viewModel.fetchProducts()
+        with(binding) {
+            btnFetch.setOnClickListener { viewModel.fetchProducts() }
+            btnRetry.setOnClickListener { viewModel.fetchProducts() }
+            btnShowCache.setOnClickListener { navigateToProductList() }
+            btnShowCacheError.setOnClickListener { navigateToProductList() }
         }
 
         observeState()
+        observeCacheAvailability()
     }
 
     private fun observeState() {
@@ -51,39 +54,67 @@ class FetchFragment : Fragment() {
                     when (state) {
                         is UiState.Idle -> {
                             binding.btnFetch.isEnabled = true
-                            binding.progressBar.visibility = View.GONE
-                            binding.layoutError.visibility = View.GONE
+                            binding.btnShowCache.isEnabled = true
+                            binding.progressBar.visibility = View.INVISIBLE
+                            binding.errorContent.visibility = View.GONE
+                            binding.mainContent.visibility = View.VISIBLE
                             binding.btnFetch.visibility = View.VISIBLE
                         }
 
                         is UiState.Loading -> {
                             binding.btnFetch.isEnabled = false
+                            binding.btnShowCache.isEnabled = false
                             binding.progressBar.visibility = View.VISIBLE
-                            binding.layoutError.visibility = View.GONE
+                            binding.errorContent.visibility = View.GONE
+                            binding.mainContent.visibility = View.VISIBLE
                             binding.btnFetch.visibility = View.VISIBLE
                         }
 
                         is UiState.Success -> {
                             binding.btnFetch.isEnabled = true
-                            binding.progressBar.visibility = View.GONE
-                            binding.layoutError.visibility = View.GONE
-                            val action = FetchFragmentDirections
-                                .actionFetchFragmentToProductListFragment()
-                            findNavController().navigate(action)
+                            binding.btnShowCache.isEnabled = true
+                            binding.progressBar.visibility = View.INVISIBLE
+                            binding.errorContent.visibility = View.GONE
+                            navigateToProductList()
                             viewModel.resetState()
                         }
 
                         is UiState.Error -> {
                             binding.btnFetch.isEnabled = true
-                            binding.progressBar.visibility = View.GONE
-                            binding.layoutError.visibility = View.VISIBLE
+                            binding.btnShowCache.isEnabled = true
+                            binding.progressBar.visibility = View.INVISIBLE
+                            binding.mainContent.visibility = View.GONE
+                            binding.errorContent.visibility = View.VISIBLE
                             binding.tvError.text = state.message
                             binding.btnFetch.visibility = View.GONE
                         }
                     }
+                    updateCacheButtonsAvailability()
                 }
             }
         }
+    }
+
+    private fun observeCacheAvailability() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.hasCachedData.collect { hasCache ->
+                    hasCachedData = hasCache
+                    updateCacheButtonsAvailability()
+                }
+            }
+        }
+    }
+
+    private fun updateCacheButtonsAvailability() {
+        val visibility = if (hasCachedData && !isLoading) View.VISIBLE else View.GONE
+        binding.btnShowCache.visibility = visibility
+        binding.btnShowCacheError.visibility = visibility
+    }
+
+    private fun navigateToProductList() {
+        val action = FetchFragmentDirections.actionFetchFragmentToProductListFragment()
+        findNavController().navigate(action)
     }
 
     override fun onDestroyView() {
