@@ -4,8 +4,20 @@
     <string name="retry">Повторити спробу</string>
     <string name="error_need_retry">Виникла помилка, повторіть спробу</string>
     <string name="title_fetch">Отримання продуктів</string>
-    <string name="in_stock">In Stock</string>
-    <string name="out_of_stock">Out of Stock</string>
+    <string name="title_product_list">Список продуктів</string>
+    <string name="in_stock">В наявності</string>
+    <string name="out_of_stock">Немає в наявності</string>
     <string name="price_format">%.2f</string>
     <string name="discount_format">%1$d %%</string>
+    <string name="title_edit_product">Редагування продукту</string>
+    <string name="save_data">Зберегти дані</string>
+    <string name="product_name">Назва продукту</string>
+    <string name="product_description">Опис продукту</string>
+    <string name="product_details">Детальніше про продукт</string>
+    <string name="price">Ціна</string>
+    <string name="brand">Бренд</string>
+    <string name="discount">Знижка</string>
+    <string name="category">Категорія</string>
+    <string name="rating">Рейтинг</string>
+    <string name="availability">Наявність</string>
 </resources>
