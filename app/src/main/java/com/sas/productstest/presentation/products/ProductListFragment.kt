@@ -10,7 +10,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.sas.productstest.R
 import com.sas.productstest.databinding.FragmentProductListBinding
+import com.sas.productstest.presentation.MainActivity
+import com.sas.productstest.presentation.common.applySystemBarInsets
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -37,9 +40,20 @@ class ProductListFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        (activity as? MainActivity)?.applyStatusBarStyle(usePrimaryColor = true)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.recyclerView.adapter = adapter
+
+        with(binding) {
+            root.applySystemBarInsets()
+            toolbar.title = getString(R.string.title_product_list)
+            toolbar.setOnClickListener { findNavController().navigateUp() }
+            recyclerView.adapter = adapter
+        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {

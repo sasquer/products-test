@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -14,10 +15,11 @@ import com.bumptech.glide.Glide
 import com.sas.productstest.R
 import com.sas.productstest.databinding.FragmentEditProductBinding
 import com.sas.productstest.domain.model.Product
+import com.sas.productstest.presentation.MainActivity
 import com.sas.productstest.presentation.common.UiState
+import com.sas.productstest.presentation.common.applySystemBarInsets
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import kotlin.math.abs
 
 @AndroidEntryPoint
 class EditProductFragment : Fragment() {
@@ -36,10 +38,17 @@ class EditProductFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        (activity as? MainActivity)?.applyStatusBarStyle(usePrimaryColor = true)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupCollapsingToolbar()
+        binding.root.applySystemBarInsets()
+
+        setupToolbar()
         observeProduct()
         observeSaveResult()
 
@@ -50,14 +59,12 @@ class EditProductFragment : Fragment() {
         }
     }
 
-    private fun setupCollapsingToolbar() {
-        binding.appBarLayout.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
-            val isCollapsed = abs(verticalOffset) >= appBarLayout.totalScrollRange
-            binding.collapsingToolbar.title = if (isCollapsed) {
-                binding.etName.text?.toString() ?: ""
-            } else {
-                ""
-            }
+    private fun setupToolbar() {
+        binding.toolbar.navigationIcon =
+            ContextCompat.getDrawable(requireContext(), R.drawable.ic_arrow_back)
+
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
         }
     }
 

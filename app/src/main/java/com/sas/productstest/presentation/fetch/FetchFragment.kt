@@ -11,7 +11,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.sas.productstest.databinding.FragmentFetchBinding
+import com.sas.productstest.presentation.MainActivity
 import com.sas.productstest.presentation.common.UiState
+import com.sas.productstest.presentation.common.applySystemBarInsets
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -33,10 +35,16 @@ class FetchFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        (activity as? MainActivity)?.applyStatusBarStyle(usePrimaryColor = false)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
+            root.applySystemBarInsets()
             btnFetch.setOnClickListener { viewModel.fetchProducts() }
             btnRetry.setOnClickListener { viewModel.fetchProducts() }
             btnShowCache.setOnClickListener { navigateToProductList() }
