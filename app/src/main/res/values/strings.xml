@@ -8,7 +8,7 @@
     <string name="title_product_list">Список продуктів</string>
     <string name="in_stock">В наявності</string>
     <string name="out_of_stock">Немає в наявності</string>
-    <string name="price_format">%.2f</string>
+    <string name="price_format">$%.2f</string>
     <string name="discount_format">%1$d %%</string>
     <string name="title_edit_product">Редагування продукту</string>
     <string name="save_data">Зберегти дані</string>
