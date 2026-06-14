@@ -80,12 +80,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="6dp"
-                android:text="@{@string/price_format(product.price)}"
-                android:textColor="@color/price_color"
+                android:textColor="@color/green_700"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@id/iv_product"
                 app:layout_constraintTop_toBottomOf="@id/tv_brand_category"
+                app:price="@{product.price}"
                 tools:text="$599.99"
                 />
 
@@ -94,14 +94,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="@{@string/discount_format(product.discount)}"
                 android:textColor="@color/discount_color"
-                android:textSize="12sp"
+                android:textSize="15sp"
+                app:discount="@{product.discount}"
                 app:layout_constraintBottom_toBottomOf="@id/tv_price"
                 app:layout_constraintStart_toEndOf="@id/tv_price"
                 tools:text="-10%"
                 />
-            <!--                app:discount="@{product.discount}"-->
 
             <TextView
                 android:id="@+id/tv_rating"
@@ -125,12 +124,12 @@
                 android:layout_marginStart="12dp"
                 android:textSize="12sp"
                 android:textStyle="bold"
+                app:availabilityColor="@{product.availability}"
+                app:availabilityText="@{product.availability}"
                 app:layout_constraintBottom_toBottomOf="@id/tv_rating"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text="In stock"
                 />
-            <!--                app:availabilityColor="@{product.availability}"-->
-            <!--                app:availabilityText="@{product.availability}"-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

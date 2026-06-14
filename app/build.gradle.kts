@@ -2,6 +2,8 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.navigation.safeargs)
@@ -48,18 +50,26 @@ android {
 //            val baseApiUrl = localProperties.getProperty("BASE_API_URL") ?: ""
 //            buildConfigField("String", "BASE_API_URL", baseApiUrl)
 
-            buildConfigField("String", "BASE_API_URL", "\"https://fake-store-api.mock.beeceptor.com/api/\"")
+            buildConfigField(
+                "String",
+                "BASE_API_URL",
+                "\"https://fake-store-api.mock.beeceptor.com/api/\""
+            )
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     buildFeatures {
         buildConfig = true
         dataBinding = true
         viewBinding = true
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
     }
 }
 
