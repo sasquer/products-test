@@ -21,4 +21,8 @@
     <string name="category">Категорія</string>
     <string name="rating">Рейтинг</string>
     <string name="availability">Наявність</string>
+    <string name="dialog_discard_title">Незбережені зміни</string>
+    <string name="dialog_discard_message">Ви змінювали дані. Вийти без збереження?</string>
+    <string name="dialog_discard_confirm">Вийти</string>
+    <string name="dialog_discard_cancel">Залишитись</string>
 </resources>

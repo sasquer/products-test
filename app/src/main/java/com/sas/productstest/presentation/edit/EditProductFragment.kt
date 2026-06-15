@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -12,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.sas.productstest.R
 import com.sas.productstest.databinding.FragmentEditProductBinding
 import com.sas.productstest.domain.model.Product
@@ -49,6 +51,7 @@ class EditProductFragment : Fragment() {
         binding.root.applySystemBarInsets()
 
         setupToolbar()
+        setupBackPressHandler()
         observeProduct()
         observeSaveResult()
 
@@ -64,7 +67,7 @@ class EditProductFragment : Fragment() {
             ContextCompat.getDrawable(requireContext(), R.drawable.ic_arrow_back)
 
         binding.toolbar.setNavigationOnClickListener {
-            findNavController().navigateUp()
+            onBackPressed()
         }
     }
 
@@ -128,6 +131,50 @@ class EditProductFragment : Fragment() {
             }
         }
     }
+
+    private fun setupBackPressHandler() {
+        val callback = object : OnBackPressedCallback(enabled = true) {
+            override fun handleOnBackPressed() {
+                onBackPressed()
+            }
+        }
+        requireActivity().onBackPressedDispatcher
+            .addCallback(viewLifecycleOwner, callback)
+    }
+
+    private fun onBackPressed() {
+        clearFocusAndHideKeyboard()
+        val currentName = binding.etName.text?.toString() ?: ""
+        val currentDescription = binding.etDescription.text?.toString() ?: ""
+
+        if (viewModel.hasUnsaveChanges(currentName, currentDescription)) {
+            showDiscardChangesDialog()
+        } else {
+            findNavController().navigateUp()
+        }
+    }
+
+    private fun clearFocusAndHideKeyboard() {
+        val focusedView = activity?.currentFocus ?: return
+        focusedView.clearFocus()
+        val imm = requireContext()
+            .getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
+        imm.hideSoftInputFromWindow(focusedView.windowToken, 0)
+    }
+
+    private fun showDiscardChangesDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.dialog_discard_title)
+            .setMessage(R.string.dialog_discard_message)
+            .setNegativeButton(R.string.dialog_discard_cancel) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setPositiveButton(R.string.dialog_discard_confirm) { _, _ ->
+                findNavController().navigateUp()
+            }
+            .show()
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -31,6 +31,9 @@ class EditProductViewModel @Inject constructor(
     private val _saveResult = MutableSharedFlow<Boolean>()
     val saveResult: SharedFlow<Boolean> = _saveResult.asSharedFlow()
 
+    private var originalName: String = ""
+    private var originalDescription: String = ""
+
     init {
         loadProduct()
     }
@@ -38,8 +41,13 @@ class EditProductViewModel @Inject constructor(
     private fun loadProduct() {
         viewModelScope.launch {
             val selectedProduct = getProductByIdUseCase(productId)
-            _product.value = if (selectedProduct != null) UiState.Success(selectedProduct)
-            else UiState.Error("Продукт не знайдено")
+            if (selectedProduct != null) {
+                originalName = selectedProduct.name
+                originalDescription = selectedProduct.description
+                _product.value = UiState.Success(selectedProduct)
+            } else {
+                _product.value = UiState.Error("Продукт не знайдено")
+            }
         }
     }
 
@@ -49,6 +57,11 @@ class EditProductViewModel @Inject constructor(
             updateProductUseCase(productId, name.trim(), description.trim())
             _saveResult.emit(true)
         }
+    }
+
+    fun hasUnsaveChanges(currentName: String, currentDescription: String): Boolean {
+        if (_product.value !is UiState.Success) return false
+        return currentName.trim() != originalName || currentDescription.trim() != originalDescription
     }
 
 }
